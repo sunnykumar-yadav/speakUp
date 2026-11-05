@@ -6,9 +6,12 @@ from dotenv import load_dotenv
 backend_dir = Path(__file__).resolve().parent
 load_dotenv(backend_dir / ".env")
 
+is_vercel = os.getenv("VERCEL") == "1"
+default_db_path = "/tmp/speakup_ai.db" if is_vercel else str(backend_dir / "speakup_ai.db")
+
 class Config:
     SECRET_KEY = os.getenv("SECRET_KEY", "speakup-ai-super-secret-key-2026-prod-ready")
-    DATABASE_PATH = os.getenv("DATABASE_PATH", str(backend_dir / "speakup_ai.db"))
+    DATABASE_PATH = os.getenv("DATABASE_PATH", default_db_path)
     
     # AI API keys
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
